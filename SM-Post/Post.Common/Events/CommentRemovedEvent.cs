@@ -4,7 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using CQRS.Core.Events;
 
-namespace CQRS.Common.Events
+namespace Post.Common.Events
 {
     public class CommentRemovedEvent : BaseEvent
     {

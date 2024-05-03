@@ -1,5 +1,5 @@
 using CQRS.Core.Events;
-namespace CQRS.Common.Events
+namespace Post.Common.Events
 {
     public class PostCreatedEvent : BaseEvent
     {
