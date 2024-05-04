@@ -7,7 +7,7 @@ namespace CQRS.Core.Domain
         protected Guid _id;
         private List<BaseEvent> _changes = new List<BaseEvent>();
         public Guid Id => _id;
-        public int Version { get; protected set; } = -1;
+        public int Version { get; set; } = -1;
         public IEnumerable<BaseEvent> GetUncommittedChanges() => _changes;
         public void MarkChangesAsCommitted() => _changes.Clear();
         private void ApplyChange(BaseEvent @event, bool isNew)

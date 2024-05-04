@@ -143,7 +143,7 @@ namespace Post.Cmd.Domain.Aggregates
             _id = @event.Id;
             _comments.Remove(@event.CommentId);
         }
-        public void DeleletePost(string userName)
+        public void DeletePost(string userName)
         {
             if (!_active)
             {
