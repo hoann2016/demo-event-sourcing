@@ -19,6 +19,9 @@ builder.Services.AddScoped<ICommentRepository, CommentRepository>();
 builder.Services.AddScoped<IEventHandler, Post.Query.Infrastructure.Handlers.EventHandler>();
 builder.Services.Configure<ConsumerConfig>(builder.Configuration.GetSection("ConsumerConfig"));
 builder.Services.AddScoped<IEventConsumer, Post.Query.Infrastructure.Consumers.EventConsumer>();
+
+builder.Services.AddControllers();
+builder.Services.AddHostedService<Post.Query.Infrastructure.Consumers.ConsumerHostedService>();
 // Add services to the container.
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
