@@ -90,7 +90,7 @@ namespace Post.Cmd.Domain.Aggregates
         public void Apply(CommentAddedEvent @event)
         {
             _id = @event.Id;
-            _comments.Add(@event.CommentId, new Tuple<string, string>(@event.Comment, @event.UserName));
+            _comments.Add(@event.CommentId, new Tuple<string, string>(@event.Comment, @event.Username));
         }
         public void EditComment(Guid commentId, string comment, string userName)
         {
@@ -112,14 +112,14 @@ namespace Post.Cmd.Domain.Aggregates
                 Id = _id,
                 CommentId = commentId,
                 Comment = comment,
-                UserName = userName,
+                Username = userName,
                 EditDate = DateTime.Now
             });
         }
         public void Apply(CommentUpdatedEvent @event)
         {
             _id = @event.Id;
-            _comments[@event.CommentId] = new Tuple<string, string>(@event.Comment, @event.UserName);
+            _comments[@event.CommentId] = new Tuple<string, string>(@event.Comment, @event.Username);
         }
         public void RemoveComment(Guid commentId, string userName)
         {
