@@ -15,26 +15,28 @@ namespace Post.Cmd.Infrastructure.Handlers
         {
             _eventStore = eventStore;
         }
-        
+
         private readonly IEventStore _eventStore;
+
         public async Task<PostAggregate> GetByIdAsync(Guid aggregateId)
-        
         {
             var aggregate = new PostAggregate();
-            var events=await _eventStore.GetEventsAsync(aggregateId);
-            if(events==null || !events.Any())
+            var events = await _eventStore.GetEventsAsync(aggregateId);
+            if (events == null || !events.Any())
             {
                 return aggregate;
             }
+
             aggregate.ReplayEvents(events);
-            var lastEvent = events.Select(x=>x.Version).Max();
+            var lastEvent = events.Select(x => x.Version).Max();
             aggregate.Version = lastEvent;
             return aggregate;
         }
 
         public async Task SaveAsync(AggregateRoot aggregateRoot)
         {
-            await _eventStore.SaveEventsAsync(aggregateRoot.Id, aggregateRoot.GetUncommittedChanges(), aggregateRoot.Version);
+            await _eventStore.SaveEventsAsync(aggregateRoot.Id, aggregateRoot.GetUncommittedChanges(),
+                aggregateRoot.Version);
             aggregateRoot.MarkChangesAsCommitted();
         }
     }
