@@ -35,5 +35,6 @@ namespace Post.Query.Api.Queries
         {
             return await _postRepository.ListWithLikeAsync(query.NumberOfLikes);
         }
+       
     }
 }
