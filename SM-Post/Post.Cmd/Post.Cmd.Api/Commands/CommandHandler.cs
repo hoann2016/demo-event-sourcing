@@ -1,5 +1,6 @@
 using CQRS.Core.Handler;
 using Post.Cmd.Domain.Aggregates;
+using Post.Common.Commands;
 
 namespace Post.Cmd.Api.Commands
 {
@@ -62,6 +63,11 @@ namespace Post.Cmd.Api.Commands
             aggregate.DeletePost(command.Username);
             await _eventSourcingHandler.SaveAsync(aggregate);
 
+        }
+
+        public async Task HandleAsync(RestoreReadCommand command)
+        {
+           await _eventSourcingHandler.RepublishEventsAsync();
         }
     }
 }

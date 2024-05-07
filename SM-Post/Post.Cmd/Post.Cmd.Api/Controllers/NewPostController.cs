@@ -52,8 +52,6 @@ namespace Post.Cmd.Api.Controllers
                     Message = "Internal server error"
                 });
             }
-
-
         }
         [HttpGet]
         public async Task<IActionResult> GetPostsAsync()

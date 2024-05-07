@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Post.Common.Commands;
 
 namespace Post.Cmd.Api.Commands
 {
@@ -14,5 +15,6 @@ namespace Post.Cmd.Api.Commands
         Task HandleAsync(EditCommentCommand command);
         Task HandleAsync(RemoveCommentCommand command);
         Task HandleAsync(DeletePostCommand command);
+        Task HandleAsync(RestoreReadCommand command);
     }
 }

@@ -13,6 +13,7 @@ using Post.Cmd.Infrastructure.Handlers;
 using Post.Cmd.Infrastructure.Producers;
 using Post.Cmd.Infrastructure.Repositories;
 using Post.Cmd.Infrastructure.Stores;
+using Post.Common.Commands;
 using Post.Common.Events;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -42,6 +43,7 @@ dispatcher.RegisterHandler<AddCommentCommand>(commandHandler.HandleAsync);
 dispatcher.RegisterHandler<EditCommentCommand>(commandHandler.HandleAsync);
 dispatcher.RegisterHandler<RemoveCommentCommand>(commandHandler.HandleAsync);
 dispatcher.RegisterHandler<DeletePostCommand>(commandHandler.HandleAsync);
+dispatcher.RegisterHandler<RestoreReadCommand>(commandHandler.HandleAsync);
 builder.Services.AddSingleton<ICommandDispatcher>(_ => dispatcher);
 // Add services to the container.
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle

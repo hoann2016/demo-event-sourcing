@@ -10,5 +10,6 @@ namespace CQRS.Core.Handler
     {
         Task SaveAsync(AggregateRoot aggregateRoot);
         Task<T> GetByIdAsync(Guid id);
+        Task RepublishEventsAsync();
     }
 }
