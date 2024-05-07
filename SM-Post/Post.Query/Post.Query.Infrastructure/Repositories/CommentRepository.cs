@@ -1,7 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Post.Query.Domain.Entities;
 using Post.Query.Domain.Repositories;
@@ -12,10 +8,12 @@ namespace Post.Query.Infrastructure.Repositories
     public class CommentRepository : ICommentRepository
     {
         private readonly DatabaseContextFactory _databaseContextFactory;
+
         public CommentRepository(DatabaseContextFactory databaseContextFactory)
         {
             _databaseContextFactory = databaseContextFactory;
         }
+
         public async Task CreateAsync(CommentEntity comment)
         {
             using DatabaseContext context = _databaseContextFactory.CreateDbContext();
@@ -40,9 +38,9 @@ namespace Post.Query.Infrastructure.Repositories
 
         public async Task UpdateAsync(CommentEntity comment)
         {
-             using DatabaseContext context = _databaseContextFactory.CreateDbContext();
-             context.Comments.Update(comment);
-             await context.SaveChangesAsync();
+            using DatabaseContext context = _databaseContextFactory.CreateDbContext();
+            context.Comments.Update(comment);
+            await context.SaveChangesAsync();
         }
     }
 }

@@ -11,7 +11,8 @@ using Post.Query.Infrastructure.Handlers;
 using Post.Query.Infrastructure.Repositories;
 
 var builder = WebApplication.CreateBuilder(args);
-Action<DbContextOptionsBuilder> configureDbContext = options => options.UseLazyLoadingProxies().UseSqlServer(builder.Configuration.GetConnectionString("SqlServer"));
+Action<DbContextOptionsBuilder> configureDbContext = options =>
+    options.UseLazyLoadingProxies().UseSqlServer(builder.Configuration.GetConnectionString("SqlServer"));
 builder.Services.AddDbContext<DatabaseContext>(configureDbContext);
 builder.Services.AddSingleton<DatabaseContextFactory>(new DatabaseContextFactory(configureDbContext));
 
@@ -49,6 +50,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
 app.UseHttpsRedirection();
 app.MapControllers();
 

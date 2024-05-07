@@ -10,23 +10,28 @@ namespace CQRS.Core.Domain
         public int Version { get; set; } = -1;
         public IEnumerable<BaseEvent> GetUncommittedChanges() => _changes;
         public void MarkChangesAsCommitted() => _changes.Clear();
+
         private void ApplyChange(BaseEvent @event, bool isNew)
         {
             var method = this.GetType().GetMethod("Apply", new Type[] { @event.GetType() });
             if (method == null)
             {
-
-                throw new ArgumentNullException(nameof(method), $"Apply method was not found for  {@event.GetType().Name}");
+                throw new ArgumentNullException(nameof(method),
+                    $"Apply method was not found for  {@event.GetType().Name}");
             }
+
             method.Invoke(this, new object[] { @event });
-            if(isNew){
+            if (isNew)
+            {
                 _changes.Add(@event);
             }
         }
+
         protected void RaiseEvent(BaseEvent @event)
         {
             ApplyChange(@event, true);
         }
+
         public void ReplayEvents(IEnumerable<BaseEvent> events)
         {
             foreach (var @event in events)
@@ -34,6 +39,5 @@ namespace CQRS.Core.Domain
                 ApplyChange(@event, false);
             }
         }
-
     }
 }

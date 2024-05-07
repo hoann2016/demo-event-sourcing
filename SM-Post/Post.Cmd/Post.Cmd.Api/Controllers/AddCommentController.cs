@@ -1,7 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using CQRS.Core.Exceptions;
 using CQRS.Core.Infrastructure;
 using Microsoft.AspNetCore.Mvc;
@@ -15,9 +11,8 @@ namespace Post.Cmd.Api.Controllers
         : ControllerBase
     {
         [HttpPut("{id}")]
-        public async Task<ActionResult> AddCommentAsync(Guid id,[FromBody] AddCommentCommand command)
+        public async Task<ActionResult> AddCommentAsync(Guid id, [FromBody] AddCommentCommand command)
         {
-
             try
             {
                 command.Id = id;
@@ -49,8 +44,6 @@ namespace Post.Cmd.Api.Controllers
                     Message = "Internal server error"
                 });
             }
-
         }
-
     }
 }

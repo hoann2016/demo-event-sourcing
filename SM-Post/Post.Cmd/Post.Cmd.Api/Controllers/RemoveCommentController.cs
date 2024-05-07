@@ -8,9 +8,9 @@ namespace Post.Cmd.Api.Controllers
 {
     [ApiController]
     [Route("/api/v1/[controller]")]
-    public class RemoveCommentController(ILogger<RemoveCommentController> logger, ICommandDispatcher commandDispatcher) : ControllerBase
+    public class RemoveCommentController(ILogger<RemoveCommentController> logger, ICommandDispatcher commandDispatcher)
+        : ControllerBase
     {
-
         [HttpDelete("{id}")]
         public async Task<ActionResult> RemoveCommentAsync(Guid id, [FromBody] RemoveCommentCommand command)
         {
@@ -44,10 +44,7 @@ namespace Post.Cmd.Api.Controllers
                 {
                     Message = "Internal server error"
                 });
-
             }
-
         }
-
     }
 }

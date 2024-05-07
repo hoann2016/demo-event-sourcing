@@ -1,7 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using CQRS.Core.Exceptions;
 using CQRS.Core.Infrastructure;
 using Microsoft.AspNetCore.Mvc;
@@ -12,7 +8,8 @@ namespace Post.Cmd.Api.Controllers
 {
     [ApiController]
     [Route("api/v1/[controller]")]
-    public class DeletePostController(ILogger<DeletePostController> logger, ICommandDispatcher commandDispatcher) : ControllerBase
+    public class DeletePostController(ILogger<DeletePostController> logger, ICommandDispatcher commandDispatcher)
+        : ControllerBase
     {
         [HttpDelete("{id}")]
         public async Task<ActionResult> DeletePostAsync(Guid id, [FromBody] DeletePostCommand command)
@@ -50,5 +47,4 @@ namespace Post.Cmd.Api.Controllers
             }
         }
     }
-
 }

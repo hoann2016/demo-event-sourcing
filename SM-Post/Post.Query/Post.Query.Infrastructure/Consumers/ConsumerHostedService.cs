@@ -1,8 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Amazon.Runtime.Internal.Util;
 using CQRS.Core.Consumers;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -14,26 +9,29 @@ namespace Post.Query.Infrastructure.Consumers
     {
         private readonly ILogger<ConsumerHostedService> _logger;
         private readonly IServiceProvider _serviceProvider;
-        public ConsumerHostedService(ILogger<ConsumerHostedService> logger,IServiceProvider serviceProvider)
+
+        public ConsumerHostedService(ILogger<ConsumerHostedService> logger, IServiceProvider serviceProvider)
         {
-            _logger = logger;   
+            _logger = logger;
             _serviceProvider = serviceProvider;
         }
+
         public Task StartAsync(CancellationToken cancellationToken)
         {
             _logger.LogInformation("Event consumer service runing");
-            using(IServiceScope scop=_serviceProvider.CreateScope())
+            using (IServiceScope scop = _serviceProvider.CreateScope())
             {
                 var eventConsumer = scop.ServiceProvider.GetRequiredService<IEventConsumer>();
                 var topic = Environment.GetEnvironmentVariable("KAFKA_TOPIC");
-                Task.Run(() => eventConsumer.Consume(topic),cancellationToken);
+                Task.Run(() => eventConsumer.Consume(topic), cancellationToken);
             }
+
             return Task.CompletedTask;
         }
 
         public Task StopAsync(CancellationToken cancellationToken)
         {
-             _logger.LogInformation("Event consumer service stoped");
+            _logger.LogInformation("Event consumer service stoped");
             return Task.CompletedTask;
         }
     }

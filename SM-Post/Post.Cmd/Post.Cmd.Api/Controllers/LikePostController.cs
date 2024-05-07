@@ -1,4 +1,3 @@
-
 using CQRS.Core.Exceptions;
 using CQRS.Core.Infrastructure;
 using Microsoft.AspNetCore.Mvc;
@@ -12,18 +11,18 @@ namespace Post.Cmd.Api.Controllers
     {
         private readonly ILogger<LikePostController> _logger;
         private readonly ICommandDispatcher _commandDispatcher;
+
         public LikePostController(ILogger<LikePostController> logger, ICommandDispatcher dispatcher)
         {
             _logger = logger;
             _commandDispatcher = dispatcher;
         }
+
         [HttpPut("{id}")]
         public async Task<ActionResult> LikePostAsync(Guid id)
         {
-
             try
             {
-
                 await _commandDispatcher.SendAsync(new LikePostCommand { Id = id });
                 return Ok(new BaseResponse { Message = "Like post successfully" });
             }
@@ -52,7 +51,6 @@ namespace Post.Cmd.Api.Controllers
                     Message = "Internal server error"
                 });
             }
-
         }
     }
 }

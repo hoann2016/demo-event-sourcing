@@ -1,7 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using CQRS.Core.Domain;
 using CQRS.Core.Events;
 using Microsoft.Extensions.Options;
@@ -13,6 +9,7 @@ namespace Post.Cmd.Infrastructure.Repositories
     public class EventStoreRepository : IEventStoreRepository
     {
         private readonly IMongoCollection<EventModel> _eventCollection;
+
         public EventStoreRepository(IOptions<MongoDbConfig> config)
         {
             var client = new MongoClient(config.Value.ConnectionString);
@@ -22,12 +19,13 @@ namespace Post.Cmd.Infrastructure.Repositories
 
         public async Task<List<EventModel>> FindAllAsync()
         {
-             return await _eventCollection.Find(_ =>true).ToListAsync().ConfigureAwait(false);
+            return await _eventCollection.Find(_ => true).ToListAsync().ConfigureAwait(false);
         }
 
         public async Task<List<EventModel>> FindByAggregateId(Guid aggregateId)
         {
-            return await _eventCollection.Find(x => x.AggregateIdentifier == aggregateId).ToListAsync().ConfigureAwait(false);
+            return await _eventCollection.Find(x => x.AggregateIdentifier == aggregateId).ToListAsync()
+                .ConfigureAwait(false);
         }
 
         public async Task SaveAsync(EventModel @event)

@@ -1,7 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using CQRS.Core.Domain;
 using CQRS.Core.Handler;
 using CQRS.Core.Infrastructure;
@@ -12,10 +8,10 @@ namespace Post.Cmd.Infrastructure.Handlers
 {
     public class EventSourcingHandler : IEventSourcingHandler<PostAggregate>
     {
-        public EventSourcingHandler(IEventStore eventStore,IEventProducer eventProducer)
+        public EventSourcingHandler(IEventStore eventStore, IEventProducer eventProducer)
         {
             _eventStore = eventStore;
-            _eventProducer=eventProducer;
+            _eventProducer = eventProducer;
         }
 
         private readonly IEventStore _eventStore;
@@ -59,12 +55,12 @@ namespace Post.Cmd.Infrastructure.Handlers
                 {
                     continue;
                 }
+
                 var events = await _eventStore.GetEventsAsync(aggregateId);
                 foreach (var @event in events)
                 {
-                    var topic =Environment.GetEnvironmentVariable("KAFKA_TOPIC");
+                    var topic = Environment.GetEnvironmentVariable("KAFKA_TOPIC");
                     await _eventProducer.ProduceAsync(topic, @event);
-
                 }
             }
         }

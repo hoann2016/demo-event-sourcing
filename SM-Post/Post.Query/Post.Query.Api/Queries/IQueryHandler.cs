@@ -1,8 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using CQRS.Core.Domain.Queries;
 using Post.Query.Domain.Entities;
 
 namespace Post.Query.Api.Queries

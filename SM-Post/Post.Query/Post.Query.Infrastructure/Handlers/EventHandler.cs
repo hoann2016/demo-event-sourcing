@@ -1,7 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Post.Common.Events;
 using Post.Query.Domain.Entities;
 using Post.Query.Domain.Repositories;
@@ -18,6 +14,7 @@ namespace Post.Query.Infrastructure.Handlers
             _postRepository = postRepository;
             _commentRepository = commentRepository;
         }
+
         public async Task On(PostCreatedEvent @event)
         {
             var post = new PostEntity()
@@ -36,7 +33,6 @@ namespace Post.Query.Infrastructure.Handlers
             if (post == null) return;
             post.Message = @event.Message;
             await _postRepository.UpdateAsync(post);
-
         }
 
         public async Task On(PostLikedEvent @event)
@@ -49,7 +45,7 @@ namespace Post.Query.Infrastructure.Handlers
 
         public async Task On(CommentAddedEvent @event)
         {
-            var comment= new CommentEntity()
+            var comment = new CommentEntity()
             {
                 CommentId = @event.CommentId,
                 PostId = @event.Id,
@@ -63,7 +59,7 @@ namespace Post.Query.Infrastructure.Handlers
 
         public async Task On(CommentUpdatedEvent @event)
         {
-            var comment =await _commentRepository.GetByIdAsync(@event.CommentId);
+            var comment = await _commentRepository.GetByIdAsync(@event.CommentId);
             if (comment == null) return;
             comment.Comment = @event.Comment;
             comment.Edited = true;

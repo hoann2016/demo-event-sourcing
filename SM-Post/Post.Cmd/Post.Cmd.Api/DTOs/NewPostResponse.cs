@@ -6,5 +6,4 @@ namespace Post.Cmd.Api.DTOs
     {
         public Guid Id { get; set; }
     }
-
 }

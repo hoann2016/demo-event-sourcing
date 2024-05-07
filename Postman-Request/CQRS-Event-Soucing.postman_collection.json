@@ -1,0 +1,392 @@
+{
+	"info": {
+		"_postman_id": "f3e8bdd3-2b3a-47f8-8c7f-4692e3c8dd87",
+		"name": "CQRS-Event-Soucing",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "374840"
+	},
+	"item": [
+		{
+			"name": "Edit message",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"Message\":\"update post 1\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:5010/api/v1/editmessage/B0CAAC91-32DE-4DE6-BEA2-BB10D90D98C0",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5010",
+					"path": [
+						"api",
+						"v1",
+						"editmessage",
+						"B0CAAC91-32DE-4DE6-BEA2-BB10D90D98C0"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create New Post",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"author\":\"philip corner2\",\r\n    \"message\":\"my message2\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:5010/api/v1/newpost",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5010",
+					"path": [
+						"api",
+						"v1",
+						"newpost"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "restore read db",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:5010/api/v1/RestoreReadDb",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5010",
+					"path": [
+						"api",
+						"v1",
+						"RestoreReadDb"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Like post",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:5010/api/v1/likepost/B0CAAC91-32DE-4DE6-BEA2-BB10D90D98C0",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5010",
+					"path": [
+						"api",
+						"v1",
+						"likepost",
+						"B0CAAC91-32DE-4DE6-BEA2-BB10D90D98C0"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "add comment",
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"uuid": "e7f656a3-9b81-4ba5-a8fc-9b102ad95885"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"comment\":\"first comment 2\",\r\n    \"username\":\"userSmart2\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:5010/api/v1/addcomment/73B9B693-5880-4176-9F5C-ADE86A6A30E2",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5010",
+					"path": [
+						"api",
+						"v1",
+						"addcomment",
+						"73B9B693-5880-4176-9F5C-ADE86A6A30E2"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "edit comment",
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"uuid": "bb60471b-b256-451f-8d53-a8741de6e190"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"commentId\":\"B9AB615A-D5C8-4F67-B57B-ED59DE3BE199\",\r\n    \"comment\":\"first comment 1 updated\",\r\n    \"username\":\"userSmart2\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:5010/api/v1/editcomment/73B9B693-5880-4176-9F5C-ADE86A6A30E2",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5010",
+					"path": [
+						"api",
+						"v1",
+						"editcomment",
+						"73B9B693-5880-4176-9F5C-ADE86A6A30E2"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "delete comment",
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"uuid": "b1322c2b-5941-487f-812a-2f9b2194b24d"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"commentId\": \"B9AB615A-D5C8-4F67-B57B-ED59DE3BE199\",\r\n    \"username\": \"userSmart2\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:5010/api/v1/removecomment/73B9B693-5880-4176-9F5C-ADE86A6A30E2",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5010",
+					"path": [
+						"api",
+						"v1",
+						"removecomment",
+						"73B9B693-5880-4176-9F5C-ADE86A6A30E2"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "delete post",
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"uuid": "aec9ee29-ec7f-4824-a082-f182abfb238e"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"username\": \"philip corner\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:5010/api/v1/deletepost/73B9B693-5880-4176-9F5C-ADE86A6A30E2",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5010",
+					"path": [
+						"api",
+						"v1",
+						"deletepost",
+						"73B9B693-5880-4176-9F5C-ADE86A6A30E2"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "query  get all post",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:5011/api/v1/postlookup",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5011",
+					"path": [
+						"api",
+						"v1",
+						"postlookup"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "query  get pots by postId",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:5011/api/v1/postlookup/byId/B0CAAC91-32DE-4DE6-BEA2-BB10D90D98C0",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5011",
+					"path": [
+						"api",
+						"v1",
+						"postlookup",
+						"byId",
+						"B0CAAC91-32DE-4DE6-BEA2-BB10D90D98C0"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "query  get post with comments",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:5011/api/v1/postlookup/withComments",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5011",
+					"path": [
+						"api",
+						"v1",
+						"postlookup",
+						"withComments"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "query  get posts with numberoflike",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:5011/api/v1/postlookup/withLikes/1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5011",
+					"path": [
+						"api",
+						"v1",
+						"postlookup",
+						"withLikes",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "query  get post by author",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:5011/api/v1/postlookup/byAuthor/philipcorner",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5011",
+					"path": [
+						"api",
+						"v1",
+						"postlookup",
+						"byAuthor",
+						"philipcorner"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

@@ -1,7 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using CQRS.Core.Domain;
 using CQRS.Core.Events;
 using CQRS.Core.Exceptions;
@@ -15,6 +11,7 @@ namespace Post.Cmd.Infrastructure.Stores
     {
         private readonly IEventStoreRepository _eventStoreRepository;
         private readonly IEventProducer _eventProducer;
+
         public EventStore(IEventStoreRepository eventStoreRepository, IEventProducer eventProducer)
         {
             _eventStoreRepository = eventStoreRepository;
@@ -28,6 +25,7 @@ namespace Post.Cmd.Infrastructure.Stores
             {
                 throw new ArgumentNullException(nameof(eventStream), "Could not retrieve event stream");
             }
+
             return eventStream.Select(x => x.AggregateIdentifier).Distinct().ToList();
         }
 
@@ -38,6 +36,7 @@ namespace Post.Cmd.Infrastructure.Stores
             {
                 throw new AggregateNotFoundException("Incorect postid provided");
             }
+
             return eventStream.OrderBy(x => x.Version).Select(x => x.EventData).ToList();
         }
 
@@ -48,6 +47,7 @@ namespace Post.Cmd.Infrastructure.Stores
             {
                 throw new ConcurrencyException("Concurrency Exception");
             }
+
             var version = expectedVersion;
             foreach (var @event in events)
             {
@@ -68,6 +68,5 @@ namespace Post.Cmd.Infrastructure.Stores
                 await _eventProducer.ProduceAsync(topic, @event);
             }
         }
-
     }
 }

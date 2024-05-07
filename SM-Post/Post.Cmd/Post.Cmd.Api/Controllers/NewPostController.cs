@@ -1,7 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using CQRS.Core.Infrastructure;
 using Microsoft.AspNetCore.Mvc;
 using Post.Cmd.Api.Commands;
@@ -16,18 +12,19 @@ namespace Post.Cmd.Api.Controllers
     {
         private readonly ILogger<NewPostController> _logger;
         private readonly ICommandDispatcher _commandDispatcher;
+
         public NewPostController(ILogger<NewPostController> logger, ICommandDispatcher commandDispatcher)
         {
             _logger = logger;
             _commandDispatcher = commandDispatcher;
         }
+
         [HttpPost]
         public async Task<IActionResult> NewPostAsync([FromBody] NewPostCommand command)
         {
             var id = Guid.NewGuid();
             try
             {
-
                 command.Id = id;
                 await _commandDispatcher.SendAsync(command);
                 return StatusCode(StatusCodes.Status201Created, new NewPostResponse
@@ -53,6 +50,7 @@ namespace Post.Cmd.Api.Controllers
                 });
             }
         }
+
         [HttpGet]
         public async Task<IActionResult> GetPostsAsync()
         {

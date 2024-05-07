@@ -39,7 +39,6 @@ namespace Post.Cmd.Api.Commands
             var aggregate = await _eventSourcingHandler.GetByIdAsync(command.Id);
             aggregate.AddComment(command.Comment, command.Username);
             await _eventSourcingHandler.SaveAsync(aggregate);
-
         }
 
         public async Task HandleAsync(EditCommentCommand command)
@@ -54,7 +53,6 @@ namespace Post.Cmd.Api.Commands
             var aggregate = await _eventSourcingHandler.GetByIdAsync(command.Id);
             aggregate.RemoveComment(command.CommentId, command.Username);
             await _eventSourcingHandler.SaveAsync(aggregate);
-
         }
 
         public async Task HandleAsync(DeletePostCommand command)
@@ -62,12 +60,11 @@ namespace Post.Cmd.Api.Commands
             var aggregate = await _eventSourcingHandler.GetByIdAsync(command.Id);
             aggregate.DeletePost(command.Username);
             await _eventSourcingHandler.SaveAsync(aggregate);
-
         }
 
         public async Task HandleAsync(RestoreReadCommand command)
         {
-           await _eventSourcingHandler.RepublishEventsAsync();
+            await _eventSourcingHandler.RepublishEventsAsync();
         }
     }
 }

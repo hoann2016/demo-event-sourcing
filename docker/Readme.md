@@ -17,3 +17,5 @@ docker run -d --name sql-container --network mydockernetwork --restart always -e
 ``
 docker run --network mydockernetwork --restart always --platform=linux/amd64 --name RealSQL -e ACCEPT_EULA=1 -e MSSQL_SA_PASSWORD=$tr0ngS@P@ssw0rd02 -p 1433:1433 -d  mcr.microsoft.com/mssql/server:2022-latest
   ``
+
+  docker run -d --name posgres-container -p 5432:5432 --network mydockernetwork -e POSTGRES_PASSWORD=postgresPsw --restart always -v postgresql_data:/var/lib/postgresql/data postgres:latest

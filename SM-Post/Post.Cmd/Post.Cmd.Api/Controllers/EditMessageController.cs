@@ -12,15 +12,16 @@ namespace Post.Cmd.Api.Controllers
     {
         private readonly ILogger<EditMessageController> _logger;
         private readonly ICommandDispatcher _commandDispatcher;
+
         public EditMessageController(ILogger<EditMessageController> logger, ICommandDispatcher commandDispatcher)
         {
             _logger = logger;
             _commandDispatcher = commandDispatcher;
         }
+
         [HttpPut("{id}")]
         public async Task<ActionResult> EditMessageAsync(Guid id, [FromBody] EditMessageCommand command)
         {
-
             try
             {
                 command.Id = id;
@@ -52,8 +53,6 @@ namespace Post.Cmd.Api.Controllers
                     Message = "Internal server error"
                 });
             }
-
         }
-
     }
 }
