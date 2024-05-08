@@ -35,9 +35,10 @@ Request to controller -> we build command then pass into the dispatcher like:  d
 **Recap**
 Transfer request data obj--> command obj-->
 aggregate obj:
-                - Get PostAggregate
-                    - For Events:               
-                        - Call action -> Raising corresponding event. ex: aggregate.EditPost()
+- Get PostAggregate
+    - For Events:               
+        - Call action -> Raising corresponding event. ex: aggregate.EditPost()
                    
--->Transfer PostAggreate to EventModel then Producer to Database.
+--> Transfer PostAggreate to EventModel then Producer to kafka  and save event database.
+
 **note**: if PostAggregate has more changes ==> producer many time.
