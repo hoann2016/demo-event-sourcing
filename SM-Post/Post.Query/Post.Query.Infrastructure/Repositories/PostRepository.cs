@@ -14,12 +14,12 @@ namespace Post.Query.Infrastructure.Repositories
             _databaseContextFactory = databaseContextFactory;
         }
 
-        public Task CreateAsync(PostEntity post)
+        public async Task CreateAsync(PostEntity post)
         {
             using (DatabaseContext context = _databaseContextFactory.CreateDbContext())
             {
                 context.Posts.Add(post);
-                return context.SaveChangesAsync();
+                await context.SaveChangesAsync();
             }
         }
 

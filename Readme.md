@@ -1,4 +1,4 @@
-Command:
+### Command:
 -Using mongo databse
 - 7 command types:
   - NewPostCommand
@@ -47,3 +47,8 @@ aggregate obj:
 --> Transfer PostAggreate to EventModel then Producer event to kafka + save to database.
 
 **note**: if PostAggregate has more changes ==> producer many time.
+
+
+### Request
+
+Using a HostedService to consume data from kafka.
