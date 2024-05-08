@@ -44,6 +44,6 @@ aggregate obj:
     - For Events:               
         - Call action -> Raising corresponding event. ex: aggregate.EditPost()
                    
---> Transfer PostAggreate to EventModel then Producer to kafka  and save event database.
+--> Transfer PostAggreate to EventModel then Producer event to kafka + save to database.
 
 **note**: if PostAggregate has more changes ==> producer many time.
