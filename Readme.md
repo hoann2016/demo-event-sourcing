@@ -1,3 +1,8 @@
+### Requirement
+- Mongo db
+- Kafka
+- Sql Server
+
 ### Command:
 -Using mongo databse
 - 7 command types:
@@ -23,7 +28,7 @@ Code flow:
 - Base command we register in the command handler (step 1), nextstep happen in Command Handler.
   Inside method, based command provided, we build to Aggregate object
 
-** What is  Aggregate: **
+**What is  Aggregate:**
   - Id, Version, GetUncommitedChanges(), MarkChangesAsCommited(),ApplyChange,
   - RaiseEvent(BaseEvent), ReplayEvent(List of BaseEvent) --> call ApplyChange --> call Apply method by reflection technology.
   - The apply method with resonding param in PostAggregate will becalled.

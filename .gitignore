@@ -14,3 +14,8 @@ SM-Post/Post.Query/Post.Query.Domain/obj/
 SM-Post/Post.Query/Post.Query.Infrastructure/bin/
 SM-Post/Post.Query/Post.Query.Infrastructure/obj/
 CQRS-ES/CQRS.Core/bin/
+SM-Post/bin/
+SM-Post/CQRS-ES/CQRS.Core/obj/
+SM-Post/obj/
+SM-Post/.vs/
+SM-Post/CQRS-ES/CQRS.Core/bin/

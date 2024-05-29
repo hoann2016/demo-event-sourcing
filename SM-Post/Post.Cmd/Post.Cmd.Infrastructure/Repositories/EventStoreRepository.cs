@@ -1,5 +1,6 @@
 using CQRS.Core.Domain;
 using CQRS.Core.Events;
+using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using MongoDB.Driver;
 using Post.Cmd.Infrastructure.Config;
@@ -9,10 +10,15 @@ namespace Post.Cmd.Infrastructure.Repositories
     public class EventStoreRepository : IEventStoreRepository
     {
         private readonly IMongoCollection<EventModel> _eventCollection;
+        private readonly ILogger<EventStoreRepository> _logger;
 
-        public EventStoreRepository(IOptions<MongoDbConfig> config)
+        public EventStoreRepository(IOptions<MongoDbConfig> config, ILogger<EventStoreRepository> logger)
         {
-            var client = new MongoClient(config.Value.ConnectionString);
+            _logger = logger;
+            var uri = $"mongodb://{config.Value.UserName}:{config.Value.Password}@{config.Value.Host}:27017/admin";
+            _logger.LogWarning($"URI: {uri}");
+
+            var client = new MongoClient(uri);
             var database = client.GetDatabase(config.Value.Database);
             _eventCollection = database.GetCollection<EventModel>(config.Value.Collection);
         }

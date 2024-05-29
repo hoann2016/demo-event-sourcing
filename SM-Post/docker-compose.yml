@@ -1,0 +1,38 @@
+version: '3.4'
+
+services:
+  post.cmd.api:
+    image: ${DOCKER_REGISTRY-}postcmdapi
+    build:
+      context: .
+      dockerfile: Post.Cmd/Post.Cmd.Api/Dockerfile
+
+  post.query.api:
+    image: ${DOCKER_REGISTRY-}postqueryapi
+    build:
+      context: .
+      dockerfile: Post.Query/Post.Query.Api/Dockerfile
+   
+  querydb:
+          image: mcr.microsoft.com/mssql/server
+  
+  commanddb:
+            image: mongo:latest
+
+  kafka:
+    image: docker.io/bitnami/kafka:3.5
+  zookeeper:
+    image: docker.io/bitnami/zookeeper:3.9
+
+volumes:
+  zookeeper_data:
+    driver: local
+  kafka_data:
+    driver: local
+  mongo-data:
+    driver: local
+   
+networks:
+  default:    
+    name: mydockernetwork
+    external: true

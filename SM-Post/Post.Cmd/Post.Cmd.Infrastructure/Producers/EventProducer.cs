@@ -2,6 +2,7 @@ using System.Text.Json;
 using Confluent.Kafka;
 using CQRS.Core.Events;
 using CQRS.Core.Producers;
+using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 
 namespace Post.Cmd.Infrastructure.Producers
@@ -9,10 +10,12 @@ namespace Post.Cmd.Infrastructure.Producers
     public class EventProducer : IEventProducer
     {
         private readonly ProducerConfig _config;
+        private readonly ILogger<EventProducer> _logger;
 
-        public EventProducer(IOptions<ProducerConfig> config)
+        public EventProducer(IOptions<ProducerConfig> config, ILogger<EventProducer> logger )
         {
             _config = config.Value;
+            _logger = logger;
         }
 
         public async Task ProduceAsync<T>(string topic, T @event) where T : BaseEvent
@@ -26,6 +29,7 @@ namespace Post.Cmd.Infrastructure.Producers
                 Key = Guid.NewGuid().ToString(),
                 Value = JsonSerializer.Serialize(@event, @event.GetType())
             };
+            _logger.LogInformation($"  topicName is :  {topic} ");
             var deliveryReport = await producer.ProduceAsync(topic, eventMessage);
             if (deliveryReport.Status == PersistenceStatus.NotPersisted)
             {

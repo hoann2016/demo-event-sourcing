@@ -1,3 +1,4 @@
+
 using CQRS.Commands;
 
 namespace Post.Common.Commands
