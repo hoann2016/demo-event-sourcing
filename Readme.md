@@ -1,7 +1,9 @@
 ### Requirement
 - Mongo db
 - Kafka
-- Sql Server
+- Sql Server(port: 1436)
+### topic
+socialMedia
 
 ### Command:
 -Using mongo databse
