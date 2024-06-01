@@ -50,6 +50,95 @@ services:
     depends_on:
       - zookeeper
     
+  storage:
+    image: openzipkin/zipkin-mysql
+    container_name: mysql
+
+  zipkin:
+    image: openzipkin/zipkin
+    container_name: zipkin
+    # Environment settings are defined here https://github.com/openzipkin/zipkin/blob/master/zipkin-server/README.md#environment-variables
+    environment:
+      - STORAGE_TYPE=mysql
+      # Point the zipkin at the storage backend
+      - MYSQL_HOST=storage
+      - MYSQL_USER=zipkin
+      - MYSQL_PASS=zipkin
+      # Uncomment to enable scribe
+      # - SCRIBE_ENABLED=true
+      # Uncomment to enable self-tracing
+     # - SELF_TRACING_ENABLED=true
+      # Uncomment to enable debug logging
+      #- JAVA_OPTS=-Dlogging.level.zipkin2=DEBUG
+    ports:
+      # Port used for the Zipkin UI and HTTP Api
+      - 9411:9411
+      # Uncomment if you set SCRIBE_ENABLED=true
+      # - 9410:9410
+    depends_on:
+      storage:
+         condition: service_healthy
+ 
+
+  dependencies:
+    image: openzipkin/zipkin-dependencies
+    container_name: dependencies
+    entrypoint: crond -f
+    environment:
+      - STORAGE_TYPE=mysql
+      - MYSQL_HOST=storage
+      # Add the baked-in username and password for the zipkin-mysql image
+      - MYSQL_USER=zipkin
+      - MYSQL_PASS=zipkin
+      # Uncomment to see dependency processing logs
+      # - ZIPKIN_LOG_LEVEL=DEBUG
+      # Uncomment to adjust memory used by the dependencies job
+      # - JAVA_OPTS=-verbose:gc -Xms1G -Xmx1G
+    depends_on:
+      storage:
+         condition: service_healthy
+
+  prometheus:
+    # Use a quay.io mirror to prevent build outages due to Docker Hub pull quotas
+    # Use latest from https://quay.io/repository/prometheus/prometheus?tab=tags
+    image: quay.io/prometheus/prometheus:v2.51.2
+    container_name: prometheus
+    ports:
+      - 9090:9090
+    depends_on:
+      zipkin:
+        condition: service_healthy
+    volumes:
+      - ./prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
+
+  grafana:
+    # Use a quay.io mirror to prevent build outages due to Docker Hub pull quotas
+    # Use latest from https://quay.io/repository/app-sre/grafana?tab=tags
+    image: quay.io/giantswarm/grafana:7.5.9
+    container_name: grafana
+    ports:
+      - 3000:3000
+    depends_on:
+      - prometheus
+    environment:
+      - GF_AUTH_ANONYMOUS_ENABLED=true
+      - GF_AUTH_ANONYMOUS_ORG_ROLE=Admin
+
+  setup_grafana_datasource:
+    # This is an arbitrary small image that has curl installed
+    # Use a quay.io mirror to prevent build outages due to Docker Hub pull quotas
+    # Use latest from https://quay.io/repository/quay.io/rackspace/curl?tab=tags
+    image: quay.io/cilium/alpine-curl:v1.9.0
+    container_name: setup_grafana_datasource
+    depends_on:
+      - grafana
+    volumes:
+      - ./prometheus/create-datasource-and-dashboard.sh:/tmp/create.sh:ro
+    working_dir: /tmp
+    entrypoint: /tmp/create.sh
+
+
+
   post.cmd.api:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
@@ -64,6 +153,7 @@ services:
       - ProducerConfig__BootstrapServers=host.docker.internal:9092
       - ProducerConfig__Topic=socialMedia
       - KAFKA_TOPIC=socialMedia
+      - ZIPKIN_URI=http://host.docker.internal:9411
     ports:
       - "7080:8080"
       - "7081:8081"
@@ -73,6 +163,7 @@ services:
     volumes:
       - ${APPDATA}/Microsoft/UserSecrets:/home/app/.microsoft/usersecrets:ro
       - ${APPDATA}/ASP.NET/Https:/home/app/.aspnet/https:ro
+
   post.query.api:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
@@ -85,9 +176,11 @@ services:
       - ProducerConfig__EnableAutoCommits=false
       - ProducerConfig__AllowAutoCreateTopics=true
       - KAFKA_TOPIC=socialMedia
+      - ZIPKIN_URI=http://host.docker.internal:9411
     depends_on:
       - querydb
       - kafka
+      - zipkin
     ports:
       - "9080:8080"
       - "9081:8081"

@@ -2,6 +2,9 @@ using Confluent.Kafka;
 using CQRS.Core.Consumers;
 using CQRS.Core.Infrastructure;
 using Microsoft.EntityFrameworkCore;
+using OpenTelemetry.Metrics;
+using OpenTelemetry.Resources;
+using OpenTelemetry.Trace;
 using Post.Query.Api.Queries;
 using Post.Query.Domain.Entities;
 using Post.Query.Domain.Repositories;
@@ -43,14 +46,31 @@ builder.Services.AddHostedService<Post.Query.Infrastructure.Consumers.ConsumerHo
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+var zipkinUri = Environment.GetEnvironmentVariable("ZIPKIN_URI") ?? "http://localhost:9411";
+builder.Services.AddOpenTelemetry()
+    .ConfigureResource(otBuilder => otBuilder
+        .AddService(serviceName: "Query.API"))
+    .WithTracing(tracing => tracing
+        .AddAspNetCoreInstrumentation()
+        .AddHttpClientInstrumentation()
+        .AddConsoleExporter()
+        .AddZipkinExporter(x => x.Endpoint = new Uri($"{zipkinUri}/api/v2/spans")));
 
+builder.Services.AddOpenTelemetry()
+    .ConfigureResource(resource => resource.AddService(serviceName: "Query.API"))
+    .WithMetrics(metrics =>
+            metrics
+                .AddAspNetCoreInstrumentation() // ASP.NET Core related
+                .AddRuntimeInstrumentation() // .NET Runtime metrics like - GC, Memory Pressure, Heap Leaks etc
+                .AddPrometheusExporter() // Prometheus Exporter
+    );
 var app = builder.Build();
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
 }
-
+app.UseOpenTelemetryPrometheusScrapingEndpoint();
 app.UseHttpsRedirection();
 app.MapControllers();
 

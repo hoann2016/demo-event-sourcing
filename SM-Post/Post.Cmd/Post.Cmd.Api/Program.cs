@@ -5,6 +5,9 @@ using CQRS.Core.Handler;
 using CQRS.Core.Infrastructure;
 using CQRS.Core.Producers;
 using MongoDB.Bson.Serialization;
+using OpenTelemetry.Metrics;
+using OpenTelemetry.Resources;
+using OpenTelemetry.Trace;
 using Post.Cmd.Api.Commands;
 using Post.Cmd.Domain.Aggregates;
 using Post.Cmd.Infrastructure.Config;
@@ -51,9 +54,27 @@ builder.Services.AddControllers();
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+var zipkinUri = Environment.GetEnvironmentVariable("ZIPKIN_URI") ?? "http://localhost:9411";
+builder.Services.AddOpenTelemetry()
+    .ConfigureResource(otBuilder => otBuilder
+        .AddService(serviceName: "CMD.API"))
+    .WithTracing(tracing => tracing
+        .AddAspNetCoreInstrumentation()
+        .AddHttpClientInstrumentation()
+        .AddConsoleExporter()
+        .AddZipkinExporter(x => x.Endpoint = new Uri($"{zipkinUri}/api/v2/spans")));
+
+builder.Services.AddOpenTelemetry()
+    .ConfigureResource(resource => resource.AddService(serviceName: "CMD.API"))
+    .WithMetrics(metrics =>
+            metrics
+                .AddAspNetCoreInstrumentation() // ASP.NET Core related
+                .AddRuntimeInstrumentation() // .NET Runtime metrics like - GC, Memory Pressure, Heap Leaks etc
+                .AddPrometheusExporter() // Prometheus Exporter
+    );
 
 var app = builder.Build();
-
+app.UseOpenTelemetryPrometheusScrapingEndpoint();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
