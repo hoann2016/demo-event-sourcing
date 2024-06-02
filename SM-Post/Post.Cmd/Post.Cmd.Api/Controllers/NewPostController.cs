@@ -29,7 +29,7 @@ namespace Post.Cmd.Api.Controllers
                 await _commandDispatcher.SendAsync(command);
                 return StatusCode(StatusCodes.Status201Created, new NewPostResponse
                 {
-                               
+                    Id = id,   
                     Message = $"New post creation request with message {command.Message} completed successfully.",
                 });
             }
